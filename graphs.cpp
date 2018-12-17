@@ -1,6 +1,7 @@
 #include <iostream>
 void graphmain()
 {
+	int choose;
 	std::cout<<"---------------------------------------------------------\n";
 	std::cout<<"---------------------------------------------------------\n";
 	std::cout<<"---            简 易 工 资 管 理 系 统 v1.0 release     \n";
@@ -12,6 +13,27 @@ void graphmain()
 	std::cout<<"---            6.联系制作团队                    \n";
 	std::cout<<"---------------------------------------------------------\n";
 	std::cout<<"---------------------------------------------------------\n";
+	std::cout<<"\n";
+	std::cout<<"请选择：";
+	std::cin>>choose;
+	switch(choose){
+		case 1:break;
+		case 2:break;
+		case 3:break;
+		case 4:break;
+		case 5:break;
+		case 6:break;
+		default:std::cout<<"您输入了错误的选项，您的意思是退出？Y|N:";
+				char a; std::cin>>a;
+				while(a!='Y'&&a!='N')
+				{
+					std::cout<<"您输入了错误的选项，您的意思是退出？Y|N:";
+					std::cin>>a;
+				}
+				if(a=='Y') exit(0);
+				if(a=='N') graphmain();
+
+	}
 }
 void makerinfo()
 {
