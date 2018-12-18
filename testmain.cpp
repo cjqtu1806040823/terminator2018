@@ -12,6 +12,7 @@ struct workerinfo {
 	int wkGWnum;
 	char wkGW[50];
 	char wkaddress[50];
+	int wkGWlevel;
 	long long int wkphonenumber;
 	char wkemail[20];
 	double wksalary;
