@@ -39,13 +39,3 @@ void makerinfo()
 {
 	std::cout<<"---            QQ群:861692730\n"<<std::endl;
 }
-#if 0
-int main(int argc, char const *argv[])
-{
-	graphmain();
-	int chooser;
-	std::cin>>chooser;
-	makerinfo();
-	return 0;
-}
-#endif
