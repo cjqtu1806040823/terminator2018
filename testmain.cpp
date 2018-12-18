@@ -1,12 +1,18 @@
 #include <bits/stdc++.h>
 #define MAXWOKER 25
+
+//函数声明放这里
+void  testsex();
 void firstchecker();
 void graphmain();
 void firstinput(FILE *p,int n);
-
+// 全局变量放在这里
 int count = 0;
+char s[20]; 
+
+//结构体信息
 struct workerinfo {
-	int wkid;
+	char wkid[20];
 	char wkname[20];
 	int wksex;
 	char wkbirth[13];
@@ -21,10 +27,10 @@ struct workerinfo {
 	char wkemail[20];
 	double wksalary;
 }someworker[MAXWOKER];
-
-
-static int size=sizeof(struct workerinfo);
-
+//声明25个够用了，实际使用可以修改
+//
+const int size=sizeof(struct workerinfo);
+//
 
 	
 /********************************************************************main
@@ -40,9 +46,19 @@ int main(int argc, char *argv[]) {
 	}
 	for(int i=0;i<count;i++)
 	{
+		puts(someworker[i].wkid);
 		puts(someworker[i].wkname);
-		printf("\n");
-	}
+		std::cout<<someworker[i].wksex<<"\n";
+		puts(someworker[i].wkbirth);
+		puts(someworker[i].fstdate);
+		std::cout<<someworker[i].wkBMnum<<"\n";
+		puts(someworker[i].wkBM);
+		std::cout<<someworker[i].wkGWnum<<"\n";
+		puts(someworker[i].wkGW);
+		puts(someworker[i].wkaddress);
+		std::cout<<someworker[i].wkphonenumber<<"\n";
+		puts(someworker[i].wkemail);
+		std::cout<<"\n\n\n";			}
 	return 0;
 }
 
@@ -68,35 +84,55 @@ void firstchecker() //检查数据文件是否为空，为空选择是否输入
 			}
 			else if(fstc == 'N')
 			exit(0);
-			else std::cout<<"输入错误！下次注意，再见\n";
+			else std::cout<<"输入错误！下次注意，再见\n [进程已结束]";
 		}
 		rewind(p);
 }
 
-void firstinput(FILE *p,int n)
+void firstinput(FILE *p,int n)//第一次输入
 {
 	rewind(p);
 	for(int i=0;i<n;i++)
 	{
-		//std::cin>>someworker[i].wkid;
+		std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
+		std::cin>>someworker[i].wkid;
+		std::cout<<"请输入姓名:(请使用拼音):";
 		std::cin>>someworker[i].wkname;
-		/*std::cin>>someworker[i].wksex;
+		std::cout<<"请输入性别: 0(man)或1(female)：";
+		std::cin>>someworker[i].wksex;
+		if(someworker[i].wksex!=0&&someworker[i].wksex!=1){
+				std::cout<<"输入错误！还有一次输入机会\n";
+				std::cin>>someworker[i].wksex;
+			}
+		if(someworker[i].wksex!=0&&someworker[i].wksex!=1){
+			std::cout<<"错误代码worker sex!\n[进程已结束]";
+			exit(1);
+		}	
+		std::cout<<"请输入员工生日  年-月-日:";
 		std::cin>>someworker[i].wkbirth;
+		std::cout<<"请输入员工入职日期  年-月-日:";
 		std::cin>>someworker[i].fstdate;
+		std::cout<<"请输入员工部门编号:";
 		std::cin>>someworker[i].wkBMnum;
+		std::cout<<"请输入员工部门名称:";
 		std::cin>>someworker[i].wkBM;
+		std::cout<<"请输入员工岗位编号 (岗位编号代表岗位等级 由低到高 最低为1) : ";
 		std::cin>>someworker[i].wkGWnum;
+		std::cout<<"请输入员工岗位名称:";
 		std::cin>>someworker[i].wkGW;
+		std::cout<<"请输入员工家庭地址:";
 		std::cin>>someworker[i].wkaddress;
+		std::cout<<"请输入员工电话:";
 		std::cin>>someworker[i].wkphonenumber;
-		std::cin>>someworker[i].wkemail;*/
+		std::cout<<"请输入员工工作邮箱:";
+		std::cin>>someworker[i].wkemail;
 	}
 	for (int i=0;i<n;i++) {
 		fwrite(&someworker[i], size, 1, p);
 	}
 }
 
-void graphmain()
+void graphmain()   //主要界面
 {
 	int choose;
 	std::cout<<"---------------------------------------------------------\n";
@@ -136,6 +172,3 @@ void makerinfo()
 {
 	std::cout<<"---            QQ群:861692730\n"<<std::endl;
 }
-
-
-
