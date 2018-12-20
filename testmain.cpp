@@ -2,13 +2,21 @@
 #define MAXWOKER 25
 
 //函数声明放这里
-void  testsex();
+void testsex();
 void firstchecker();
 void graphmain();
 void firstinput(FILE *p,int n);
+void findinfo_String(int i,char info[]);
+void outputinfo(int n,int i);
+void makerinfo();
+void addinfo(FILE *p,int n);
+void graphworker();
 // 全局变量放在这里
 int count = 0;
-char s[20]; 
+char s[20];
+FILE *p=fopen("misinfo.dat", "a+b");
+char info[50];  //info字符串用于使用中查找
+
 
 //结构体信息
 struct workerinfo {
@@ -22,10 +30,10 @@ struct workerinfo {
 	int wkGWnum;
 	char wkGW[50];
 	char wkaddress[50];
-	int wkGWlevel;
-	long long int wkphonenumber;
+	char wkphonenumber[20];
 	char wkemail[20];
 	double wksalary;
+	char BMJJ[200];
 }someworker[MAXWOKER];
 //声明25个够用了，实际使用可以修改
 //
@@ -37,28 +45,16 @@ const int size=sizeof(struct workerinfo);
 **********************************************************************/
 
 int main(int argc, char *argv[]) {
-	FILE *p=fopen("misinfo.dat", "a+b");
+	memset(info, 0, 50*sizeof(char));
 	rewind(p);
 	firstchecker();
+	//从文件中读数据到结构体变量
 	while(fread(&someworker[count], size, 1, p)==1)
 	{
 		count++;
 	}
-	for(int i=0;i<count;i++)
-	{
-		puts(someworker[i].wkid);
-		puts(someworker[i].wkname);
-		std::cout<<someworker[i].wksex<<"\n";
-		puts(someworker[i].wkbirth);
-		puts(someworker[i].fstdate);
-		std::cout<<someworker[i].wkBMnum<<"\n";
-		puts(someworker[i].wkBM);
-		std::cout<<someworker[i].wkGWnum<<"\n";
-		puts(someworker[i].wkGW);
-		puts(someworker[i].wkaddress);
-		std::cout<<someworker[i].wkphonenumber<<"\n";
-		puts(someworker[i].wkemail);
-		std::cout<<"\n\n\n";			}
+	//并计数员工数
+	graphmain();
 	return 0;
 }
 
@@ -152,10 +148,10 @@ void graphmain()   //主要界面
 	switch(choose){
 		case 1:break;
 		case 2:break;
-		case 3:break;
+		case 3:graphworker();break;
 		case 4:break;
-		case 5:break;
-		case 6:break;
+		case 5:{fclose(p);exit(0);}break;
+		case 6:makerinfo();break;
 		default:std::cout<<"您输入了错误的选项，您的意思是退出？Y|N:";
 				char a; std::cin>>a;
 				while(a!='Y'&&a!='N')
@@ -168,7 +164,213 @@ void graphmain()   //主要界面
 
 	}
 }
+
 void makerinfo()
 {
 	std::cout<<"---            QQ群:861692730\n"<<std::endl;
+}
+
+void outputinfo(int i,int n) //i为第几个员工、n为第几项信息
+{
+	switch(n)
+	{
+		
+			case 1:puts(someworker[i].wkid);break;
+			case 2:puts(someworker[i].wkname);break;
+			case 3:std::cout<<someworker[i].wksex<<"\n";break;
+			case 4:puts(someworker[i].wkbirth);break;
+			case 5:puts(someworker[i].fstdate);break;
+			case 6:std::cout<<someworker[i].wkBMnum<<"\n";break;
+			case 7 :puts(someworker[i].wkBM); break;
+			case 8:std::cout<<someworker[i].wkGWnum<<"\n";break;
+			case 9:puts(someworker[i].wkGW);break;
+			case 10:puts(someworker[i].wkaddress);break;
+			case 11:std::cout<<someworker[i].wkphonenumber<<"\n"; break;
+			case 12:puts(someworker[i].wkemail);break;
+	}
+	std::cout<<"\n-------------------------------------------\n";			
+	
+}
+//用于查找[字符串]型数据
+//按结构体创建时的数据顺序对数据编号,
+//i为编号，如查找wkid ，则使用findinfo_String(1,info)
+void findinfo_String(int i,char info[]) 
+{
+	switch(i)				
+	{
+		case 1:{
+		for(int i2=0;i2<count;i2++)
+		{
+			if(strcmp(info,someworker[i2].wkid)==0)
+			{
+				std::cout<<info<<"---"<<someworker[i2].wkname<<"\n";
+			std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+			}
+		} 
+		}break;
+		case 2:	{
+		for(int i2=0;i2<count;i2++)
+		{
+			if(strcmp(info,someworker[i].wkname)==0)
+			{
+				std::cout<<someworker[i].wkname<<"\n";
+				std::cout<<"该员工工号："<<someworker[i].wkid<<"\n";
+				std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+			}
+		}
+		}break;
+		case 4:{
+			
+			for(int i2=0;i2<count;i2++)
+			{
+				if(strcmp(info,someworker[i].wkbirth)==0)
+				{
+					std::cout<<"找到生日为："<<info<<"的职工\n";
+					std::cout<<someworker[i].wkname<<"\n";
+					std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+				}
+			}
+		}break;
+			case 5:{
+				for(int i2=0;i2<count;i2++)
+				{
+					if(strcmp(info,someworker[i].fstdate)==0)
+					{
+						std::cout<<"找到入职时间为:"<<info<<"的员工\n";
+						std::cout<<someworker[i].wkname<<"\n";
+						std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+					}
+				}
+			}break;
+				case 7:
+					{
+					std::cout<<"部门："<<info<<"\n";
+					for(int i2=0;i2<count;i2++)
+					{
+						if(strcmp(info,someworker[i].wkBM)==0)
+						{
+							std::cout<<"员工名称："<<someworker[i].wkname<<"\n";
+						std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+						}
+					}
+					}break;
+				case 9:
+					{
+					std::cout<<"岗位："<<info<<std::endl;
+					for(int i2=0;i2<count;i2++)
+					{
+						if(strcmp(info, someworker[i].wkGW)==0)
+						{
+							
+							std::cout<<someworker[i].wkname;
+							std::cout<<"\n";
+							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+						}
+					}
+				}break;
+				case 10:
+					{
+					for(int i2=0;i2<count;i2++)
+					{
+						if(strcmp(info, someworker[i].wkaddress)==0)
+						{
+							
+							std::cout<<someworker[i].wkname;
+							std::cout<<"\n";
+							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+						}
+					}
+					}break;
+				case 11:
+					{
+					for(int i2=0;i2<count;i2++)
+					{
+						if(strcmp(info, someworker[i].wkphonenumber)==0)
+						{
+							
+							std::cout<<someworker[i].wkname;
+							std::cout<<"\n";
+							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+						}
+						}
+					}break;
+				case 12:
+					{
+					for(int i2=0;i2<count;i2++)
+					{
+						if(strcmp(info, someworker[i].wkemail)==0)
+						{
+							std::cout<<info<<std::endl;
+							std::cout<<someworker[i].wkname;
+							std::cout<<"\n";
+							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+						}		
+					}break;
+					}
+				}
+}
+
+
+	void addinfo(FILE *p,int n)
+	{
+		for(int i=count;i<n+count;i++)
+		{
+			std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
+			std::cin>>someworker[i].wkid;
+			std::cout<<"请输入姓名:(请使用拼音):";
+			std::cin>>someworker[i].wkname;
+			std::cout<<"请输入性别: 0(man)或1(female)：";
+			std::cin>>someworker[i].wksex;
+			if(someworker[i].wksex!=0&&someworker[i].wksex!=1){
+					std::cout<<"输入错误！还有一次输入机会\n";
+					std::cin>>someworker[i].wksex;
+				}
+			if(someworker[i].wksex!=0&&someworker[i].wksex!=1){
+				std::cout<<"错误代码worker sex!\n[进程已结束]";
+				exit(1);
+			}	
+			std::cout<<"请输入员工生日  年-月-日:";
+			std::cin>>someworker[i].wkbirth;
+			std::cout<<"请输入员工入职日期  年-月-日:";
+			std::cin>>someworker[i].fstdate;
+			std::cout<<"请输入员工部门编号:";
+			std::cin>>someworker[i].wkBMnum;
+			std::cout<<"请输入员工部门名称:";
+			std::cin>>someworker[i].wkBM;
+			std::cout<<"请输入员工岗位编号 (岗位编号代表岗位等级 由低到高 最低为1) : ";
+			std::cin>>someworker[i].wkGWnum;
+			std::cout<<"请输入员工岗位名称:";
+			std::cin>>someworker[i].wkGW;
+			std::cout<<"请输入员工家庭地址:";
+			std::cin>>someworker[i].wkaddress;
+			std::cout<<"请输入员工电话:";
+			std::cin>>someworker[i].wkphonenumber;
+			std::cout<<"请输入员工工作邮箱:";
+			std::cin>>someworker[i].wkemail;
+		}
+		rewind(p);
+		for (int i=0;i<n+count;i++) {
+			fwrite(&someworker[i], size, 1, p);
+		}
+		count =count + n;
+
+	}
+	
+
+
+void graphworker()
+{
+	std::cout<<"------------------------- 员工基本信息  ----------------------------\n";
+	std::cout<<"目前有"<<count<<"个员工\n";
+	std::cout<<"---                   1.增加员工信息\n";
+	std::cout<<"------------------------------------------------------------------\n";
+	int choose;
+	std::cin>>choose;
+	switch (choose) {
+		case 1:{
+			std::cout<<"请输入需要增加的员工数:";
+			int n; std::cin>>n;
+			addinfo(p, n);
+		}break;	
+	}
 }
