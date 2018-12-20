@@ -10,7 +10,7 @@ void findinfo_String(int i,char info[]);
 void outputinfo(int n,int i);
 void addinfo(FILE *p,int n);
 void graphworker();
-//void deleteworker();
+void deleteworker();
 
 // 全局变量放在这里
 int count = 0;
@@ -152,7 +152,7 @@ void graphmain()   //主要界面
 		case 1:break;
 		case 2:break;
 		case 3:graphworker();break;
-		case 4:;break;
+		case 4:deleteworker();;break;
 		case 5:;break;
 		case 6:{fclose(p);exit(0);}break;
 		default:std::cout<<"您输入了错误的选项，您的意思是退出？Y|N:";
@@ -449,30 +449,40 @@ void graphworker()
 	graphworker();
 }
 
-//void deleteworker()
-//{
-//	memset(info, 0, 50*sizeof(char));
-//	std::cin>>info;
-//	rewind(p);
-//		int count4= 0;
-//		while(fread(&someworker[count4], size, 1, p)==1)
-//			{
-//				if(someworker[count4].wkid[0]!='#')
-//				count4++;
-//			}
-//			rewind(p);
-//			for(int i2=0;i2<count4;i2++)
-//			{
-//				if(strcmp(info,someworker[i2].wkid)==0)
-//				{
-//				std::cout<<info<<"---"<<someworker[i2].wkname<<"\n";
-//				std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
-//				someworker[i2].wkid[0] = '#';
-//				}
-//			}
-//			rewind(p);
-//		for(int i=0;i<count4;i++)
-//		{
-//			fwrite(&someworker[i], size, 1, p);
-//		}			
-//}
+void deleteworker()
+{
+	memset(info, 0, 50*sizeof(char));
+	std::cin>>info;
+	rewind(p);
+		int count4= 0;
+		while(fread(&someworker[count4], size, 1, p)==1)
+			{
+				if(someworker[count4].wkid[0]!='#')
+				count4++;
+			}
+			rewind(p);
+			int findyes = 0;
+			for(int i2=0;i2<count4;i2++)
+			{
+				if(strcmp(info,someworker[i2].wkid)==0)
+				{
+		std::cout<<info<<"---"<<someworker[i2].wkname<<"\n";
+				std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+				someworker[i2].wkid[0] = '#';
+				findyes = 1;
+				}
+			}
+			if(findyes == 0) std::cout<<"未找到工号为"<<info<<"的员工!\n";
+			else std::cout<<"删除成功!\n";
+			fclose(p);
+			p = fopen("misinfo.dat", "wb+");
+			rewind(p);
+		for(int i=0;i<count4;i++)
+		{
+			fwrite(&someworker[i], size, 1, p);
+		}
+		fclose(p);
+		p = fopen("misinfo.dat","a+b");
+		graphmain();
+				
+}
