@@ -8,7 +8,6 @@ void graphmain();
 void firstinput(FILE *p,int n);
 void findinfo_String(int i,char info[]);
 void outputinfo(int n,int i);
-void makerinfo();
 void addinfo(FILE *p,int n);
 void graphworker();
 // 全局变量放在这里
@@ -139,8 +138,7 @@ void graphmain()   //主要界面
 	std::cout<<"---            3.员工基本信息                           \n";
 	std::cout<<"---            4.工资信息                              \n";
 	std::cout<<"---            5.退出系统                              \n";
-	std::cout<<"---            6.联系制作团队                    \n";
-	std::cout<<"---------------------------------------------------------\n";
+		std::cout<<"---------------------------------------------------------\n";
 	std::cout<<"---------------------------------------------------------\n";
 	std::cout<<"\n";
 	std::cout<<"请选择：";
@@ -151,7 +149,6 @@ void graphmain()   //主要界面
 		case 3:graphworker();break;
 		case 4:break;
 		case 5:{fclose(p);exit(0);}break;
-		case 6:makerinfo();break;
 		default:std::cout<<"您输入了错误的选项，您的意思是退出？Y|N:";
 				char a; std::cin>>a;
 				while(a!='Y'&&a!='N')
@@ -165,30 +162,62 @@ void graphmain()   //主要界面
 	}
 }
 
-void makerinfo()
-{
-	std::cout<<"---            QQ群:861692730\n"<<std::endl;
-}
 
 void outputinfo(int i,int n) //i为第几个员工、n为第几项信息
 {
 	switch(n)
 	{
 		
-			case 1:puts(someworker[i].wkid);break;
-			case 2:puts(someworker[i].wkname);break;
-			case 3:std::cout<<someworker[i].wksex<<"\n";break;
-			case 4:puts(someworker[i].wkbirth);break;
-			case 5:puts(someworker[i].fstdate);break;
-			case 6:std::cout<<someworker[i].wkBMnum<<"\n";break;
-			case 7 :puts(someworker[i].wkBM); break;
-			case 8:std::cout<<someworker[i].wkGWnum<<"\n";break;
-			case 9:puts(someworker[i].wkGW);break;
-			case 10:puts(someworker[i].wkaddress);break;
-			case 11:std::cout<<someworker[i].wkphonenumber<<"\n"; break;
-			case 12:puts(someworker[i].wkemail);break;
+			case 1:{
+				std::cout<<"工号:";
+				puts(someworker[i].wkid);}
+				break;
+			case 2:{
+				std::cout<<"姓名:";
+				puts(someworker[i].wkname);}break;
+			case 3:{
+				std::cout<<"性别:";
+				if(someworker[i].wksex==0)
+				std::cout<<"男\n";
+				else 
+				std::cout<<"女\n";
+			}
+			break;
+			case 4:
+				{
+					std::cout<<"生日:";
+					puts(someworker[i].wkbirth);
+				}break;
+			case 5:
+				{
+					std::cout<<"入职时间:";
+					puts(someworker[i].fstdate);}break;
+			case 6:{
+				std::cout<<"部门编号:";
+				std::cout<<someworker[i].wkBMnum<<"\n";}break;
+			case 7 :{
+				std::cout<<"部门名称:";
+				puts(someworker[i].wkBM);}
+			 break;
+			case 8:{
+				std::cout<<"岗位编号(等级):";
+				std::cout<<someworker[i].wkGWnum<<"\n";}
+			break;
+			case 9:{
+				std::cout<<"岗位名称:";
+				puts(someworker[i].wkGW);}break;
+			case 10:{
+				std::cout<<"员工地址:";
+				puts(someworker[i].wkaddress);}
+			break;
+			case 11:{
+				std::cout<<"电话号码:";
+				std::cout<<someworker[i].wkphonenumber<<"\n";} break;
+			case 12:{
+				std::cout<<"电子邮箱:";
+				puts(someworker[i].wkemail);}break;
 	}
-	std::cout<<"\n-------------------------------------------\n";			
+				
 	
 }
 //用于查找[字符串]型数据
@@ -369,6 +398,8 @@ void graphworker()
 		}
 	std::cout<<"目前有"<<count2<<"个员工\n";
 	std::cout<<"---                   1.增加员工信息\n";
+	std::cout<<"---                   2.浏览全部员工信息\n";
+	//std::cout<<"---                   3.\n";
 	std::cout<<"---                   0.退出到上一层\n";
 	std::cout<<"------------------------------------------------------------------\n";
 	int choose;
@@ -381,6 +412,17 @@ void graphworker()
 		}break;
 		case 0:{
 			graphmain();
+		}break;
+		case 2:{
+			for(int i=0;i<count2;i++)
+			{
+				std::cout<<"--------"<<i<<"--------\n";
+				for(int i2=1;i2<=12;i2++)
+				{
+				outputinfo(i, i2);
+				}
+			}
 		}break;	
 	}
+	graphworker();
 }
