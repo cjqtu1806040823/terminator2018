@@ -10,6 +10,8 @@ void findinfo_String(int i,char info[]);
 void outputinfo(int n,int i);
 void addinfo(FILE *p,int n);
 void graphworker();
+//void deleteworker();
+
 // 全局变量放在这里
 int count = 0;
 char s[20];
@@ -53,6 +55,7 @@ int main(int argc, char *argv[]) {
 		count++;
 	}
 	//并计数员工数
+	//findinfo_String(1);
 	graphmain();
 	return 0;
 }
@@ -64,7 +67,7 @@ void firstchecker() //检查数据文件是否为空，为空选择是否输入
 {
 	FILE *p=fopen("misinfo.dat", "a+b");
 		rewind(p); //重新定位到文件开头
-		if(fread(&someworker[count], size,1, p)==0)
+		if(fread(&someworker[0], size,1, p)==0)
 		{
 			std::cout<<"目前数据信息为空，是否输入信息(Y/N):";
 			char fstc;
@@ -122,6 +125,7 @@ void firstinput(FILE *p,int n)//第一次输入
 		std::cout<<"请输入员工工作邮箱:";
 		std::cin>>someworker[i].wkemail;
 	}
+	rewind(p);
 	for (int i=0;i<n;i++) {
 		fwrite(&someworker[i], size, 1, p);
 	}
@@ -136,8 +140,9 @@ void graphmain()   //主要界面
 	std::cout<<"---            1.部门信息                              \n";
 	std::cout<<"---            2.岗位信息及分级                         \n";
 	std::cout<<"---            3.员工基本信息                           \n";
-	std::cout<<"---            4.工资信息                              \n";
-	std::cout<<"---            5.退出系统                              \n";
+	std::cout<<"---            4.删除员工                              \n";
+	std::cout<<"---            5.工资信息                              \n";
+	std::cout<<"---            6.退出系统                              \n";
 		std::cout<<"---------------------------------------------------------\n";
 	std::cout<<"---------------------------------------------------------\n";
 	std::cout<<"\n";
@@ -147,8 +152,9 @@ void graphmain()   //主要界面
 		case 1:break;
 		case 2:break;
 		case 3:graphworker();break;
-		case 4:break;
-		case 5:{fclose(p);exit(0);}break;
+		case 4:;break;
+		case 5:;break;
+		case 6:{fclose(p);exit(0);}break;
 		default:std::cout<<"您输入了错误的选项，您的意思是退出？Y|N:";
 				char a; std::cin>>a;
 				while(a!='Y'&&a!='N')
@@ -225,20 +231,27 @@ void outputinfo(int i,int n) //i为第几个员工、n为第几项信息
 //i为编号，如查找wkid ，则使用findinfo_String(1,info)
 void findinfo_String(int i,char info[]) 
 {
+	rewind(p);
+	int count4= 0;
+	while(fread(&someworker[count4], size, 1, p)==1)
+		{
+			if(someworker[count4].wkid[0]!='#')
+			count4++;
+		}
 	switch(i)				
 	{
 		case 1:{
-		for(int i2=0;i2<count;i2++)
+		for(int i2=0;i2<count4;i2++)
 		{
 			if(strcmp(info,someworker[i2].wkid)==0)
 			{
 				std::cout<<info<<"---"<<someworker[i2].wkname<<"\n";
-			std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+			std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";			
 			}
 		} 
 		}break;
 		case 2:	{
-		for(int i2=0;i2<count;i2++)
+		for(int i2=0;i2<count4;i2++)
 		{
 			if(strcmp(info,someworker[i].wkname)==0)
 			{
@@ -250,7 +263,7 @@ void findinfo_String(int i,char info[])
 		}break;
 		case 4:{
 			
-			for(int i2=0;i2<count;i2++)
+			for(int i2=0;i2<count4;i2++)
 			{
 				if(strcmp(info,someworker[i].wkbirth)==0)
 				{
@@ -261,7 +274,7 @@ void findinfo_String(int i,char info[])
 			}
 		}break;
 			case 5:{
-				for(int i2=0;i2<count;i2++)
+				for(int i2=0;i2<count4;i2++)
 				{
 					if(strcmp(info,someworker[i].fstdate)==0)
 					{
@@ -274,7 +287,7 @@ void findinfo_String(int i,char info[])
 				case 7:
 					{
 					std::cout<<"部门："<<info<<"\n";
-					for(int i2=0;i2<count;i2++)
+					for(int i2=0;i2<count4;i2++)
 					{
 						if(strcmp(info,someworker[i].wkBM)==0)
 						{
@@ -286,7 +299,7 @@ void findinfo_String(int i,char info[])
 				case 9:
 					{
 					std::cout<<"岗位："<<info<<std::endl;
-					for(int i2=0;i2<count;i2++)
+					for(int i2=0;i2<count4;i2++)
 					{
 						if(strcmp(info, someworker[i].wkGW)==0)
 						{
@@ -299,7 +312,7 @@ void findinfo_String(int i,char info[])
 				}break;
 				case 10:
 					{
-					for(int i2=0;i2<count;i2++)
+					for(int i2=0;i2<count4;i2++)
 					{
 						if(strcmp(info, someworker[i].wkaddress)==0)
 						{
@@ -312,7 +325,7 @@ void findinfo_String(int i,char info[])
 					}break;
 				case 11:
 					{
-					for(int i2=0;i2<count;i2++)
+					for(int i2=0;i2<count4;i2++)
 					{
 						if(strcmp(info, someworker[i].wkphonenumber)==0)
 						{
@@ -325,7 +338,7 @@ void findinfo_String(int i,char info[])
 					}break;
 				case 12:
 					{
-					for(int i2=0;i2<count;i2++)
+					for(int i2=0;i2<count4;i2++)
 					{
 						if(strcmp(info, someworker[i].wkemail)==0)
 						{
@@ -342,9 +355,17 @@ void findinfo_String(int i,char info[])
 
 	void addinfo(FILE *p,int n)
 	{
-		for(int i=count;i<n+count;i++)
+		rewind(p);
+		int count3= 0 ;
+		while(fread(&someworker[count3], size, 1, p)==1)
+			{
+				count3++;
+			}
+
+		for(int i=count3;i<n+count3;i++)
 		{
 			std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
+			memset(someworker[i].wkid,0,20*sizeof(char));
 			std::cin>>someworker[i].wkid;
 			std::cout<<"请输入姓名:(请使用拼音):";
 			std::cin>>someworker[i].wkname;
@@ -378,7 +399,7 @@ void findinfo_String(int i,char info[])
 			std::cin>>someworker[i].wkemail;
 		}
 		rewind(p);
-		for (int i=count;i<n+count;i++) {
+		for (int i=count3;i<n+count3;i++) {
 			fwrite(&someworker[i], size, 1, p);
 		}
 		
@@ -392,14 +413,14 @@ void graphworker()
 	std::cout<<"------------------------- 员工基本信息  ----------------------------\n";
 	int count2 = 0;
 	rewind(p);
-	while(fread(&someworker[count], size, 1, p)==1)
+	while(fread(&someworker[count2], size, 1, p)==1)
 		{
+			if(someworker[count2].wkid[0]!='#')
 			count2++;
 		}
 	std::cout<<"目前有"<<count2<<"个员工\n";
 	std::cout<<"---                   1.增加员工信息\n";
 	std::cout<<"---                   2.浏览全部员工信息\n";
-	//std::cout<<"---                   3.\n";
 	std::cout<<"---                   0.退出到上一层\n";
 	std::cout<<"------------------------------------------------------------------\n";
 	int choose;
@@ -416,6 +437,7 @@ void graphworker()
 		case 2:{
 			for(int i=0;i<count2;i++)
 			{
+				if(someworker[i].wkid[0] == '#') continue;
 				std::cout<<"--------"<<i<<"--------\n";
 				for(int i2=1;i2<=12;i2++)
 				{
@@ -423,6 +445,34 @@ void graphworker()
 				}
 			}
 		}break;	
-	}
+	} 
 	graphworker();
 }
+
+//void deleteworker()
+//{
+//	memset(info, 0, 50*sizeof(char));
+//	std::cin>>info;
+//	rewind(p);
+//		int count4= 0;
+//		while(fread(&someworker[count4], size, 1, p)==1)
+//			{
+//				if(someworker[count4].wkid[0]!='#')
+//				count4++;
+//			}
+//			rewind(p);
+//			for(int i2=0;i2<count4;i2++)
+//			{
+//				if(strcmp(info,someworker[i2].wkid)==0)
+//				{
+//				std::cout<<info<<"---"<<someworker[i2].wkname<<"\n";
+//				std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+//				someworker[i2].wkid[0] = '#';
+//				}
+//			}
+//			rewind(p);
+//		for(int i=0;i<count4;i++)
+//		{
+//			fwrite(&someworker[i], size, 1, p);
+//		}			
+//}
