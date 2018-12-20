@@ -349,10 +349,10 @@ void findinfo_String(int i,char info[])
 			std::cin>>someworker[i].wkemail;
 		}
 		rewind(p);
-		for (int i=0;i<n+count;i++) {
+		for (int i=count;i<n+count;i++) {
 			fwrite(&someworker[i], size, 1, p);
 		}
-		count =count + n;
+		
 
 	}
 	
@@ -361,8 +361,15 @@ void findinfo_String(int i,char info[])
 void graphworker()
 {
 	std::cout<<"------------------------- 员工基本信息  ----------------------------\n";
-	std::cout<<"目前有"<<count<<"个员工\n";
+	int count2 = 0;
+	rewind(p);
+	while(fread(&someworker[count], size, 1, p)==1)
+		{
+			count2++;
+		}
+	std::cout<<"目前有"<<count2<<"个员工\n";
 	std::cout<<"---                   1.增加员工信息\n";
+	std::cout<<"---                   0.退出到上一层\n";
 	std::cout<<"------------------------------------------------------------------\n";
 	int choose;
 	std::cin>>choose;
@@ -371,6 +378,9 @@ void graphworker()
 			std::cout<<"请输入需要增加的员工数:";
 			int n; std::cin>>n;
 			addinfo(p, n);
+		}break;
+		case 0:{
+			graphmain();
 		}break;	
 	}
 }
