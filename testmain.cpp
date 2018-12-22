@@ -295,7 +295,8 @@ int findinfo_String(int i,char info[])
 			if(strcmp(info,someworker[i2].wkid)==0)
 			{
 				std::cout<<info<<"---"<<someworker[i2].wkname<<"\n";
-			std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+			std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+			std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";
 			found = 1;
 			return i2;		
 			}
@@ -311,7 +312,7 @@ int findinfo_String(int i,char info[])
 			{
 				std::cout<<someworker[i2].wkname<<"\n";
 				std::cout<<"该员工工号："<<someworker[i2].wkid<<"\n";
-				std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+				std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
 				found = 1;
 				return i2;
 			}
@@ -326,7 +327,8 @@ int findinfo_String(int i,char info[])
 				{
 					std::cout<<"找到生日为："<<info<<"的职工\n";
 					std::cout<<someworker[i2].wkname<<"\n";
-					std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+					std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+					std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";
 					found = 1;
 					return i2;
 				}
@@ -340,7 +342,9 @@ int findinfo_String(int i,char info[])
 					{
 						std::cout<<"找到入职时间为:"<<info<<"的员工\n";
 						std::cout<<someworker[i2].wkname<<"\n";
-						std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+						std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+//						std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+						std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";
 						found = 1;
 						return i2;
 					}
@@ -355,7 +359,8 @@ int findinfo_String(int i,char info[])
 						if(_strcmp(info,someworker[i2].wkBM)==0)
 						{
 							std::cout<<"员工名称："<<someworker[i2].wkname<<"\n";
-						std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+						std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+						std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";	
 						found = 1;
 						return i2;
 						}
@@ -373,7 +378,8 @@ int findinfo_String(int i,char info[])
 							
 							std::cout<<someworker[i2].wkname;
 							std::cout<<"\n";
-							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+							std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+							std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";
 							found =1 ;
 							
 						}
@@ -390,7 +396,8 @@ int findinfo_String(int i,char info[])
 							
 							std::cout<<someworker[i2].wkname;
 							std::cout<<"\n";
-							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+							std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+							std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";
 							found = 1;
 							return i2;
 						}
@@ -406,7 +413,8 @@ int findinfo_String(int i,char info[])
 							
 							std::cout<<someworker[i2].wkname;
 							std::cout<<"\n";
-							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
+							std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+							std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";
 							found = 1;
 							return i2;
 						}
@@ -422,7 +430,8 @@ int findinfo_String(int i,char info[])
 							std::cout<<info<<std::endl;
 							std::cout<<someworker[i2].wkname;
 							std::cout<<"\n";
-							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";
+							std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
+							std::cout<<"该员工工号:"<<someworker[i2].wkid<<"\n";
 							found = 1;
 							return i2;
 						}		
