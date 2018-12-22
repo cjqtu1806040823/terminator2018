@@ -16,12 +16,16 @@ int  _strcmp(char a[],char b[]);
 int readinfo();
 void changeinfo();
 void outputsalary();
+void BMinfo();
+void GWinfo();
 
 // 全局变量放在这里
 int count = 0;
-char s[20];
+//char s[20];
 FILE *p=fopen("misinfo.dat", "a+b");
-char info[50];  //info字符串用于使用中查找
+char info[50];  
+//info字符串用于使用中查找
+
 
 
 //结构体信息
@@ -45,6 +49,7 @@ struct workerinfo {
 	double tax_rate;
 	double extra_salary;
 	char BMJJ[200];
+	char GWZZ[200];
 }someworker[MAXWOKER];
 //声明25个够用了，实际使用可以修改
 //
@@ -177,8 +182,8 @@ void graphmain()   //主要界面
 	std::cout<<"请选择：";
 	std::cin>>choose;
 	switch(choose){
-		case 1:break;
-		case 2:break;
+		case 1:BMinfo();break;
+		case 2:GWinfo();break;
 		case 3:graphworker();break;
 		case 4:deleteworker();;break;
 		case 5:outputsalary();break;
@@ -360,7 +365,8 @@ int findinfo_String(int i,char info[])
 				case 9:
 					{
 					std::cout<<"岗位："<<info<<std::endl;
-					for(int i2=0;i2<count4;i2++)
+					int i2;
+					for( i2=0;i2<count4;i2++)
 					{
 						if(_strcmp(info, someworker[i2].wkGW)==0)
 						{
@@ -369,9 +375,10 @@ int findinfo_String(int i,char info[])
 							std::cout<<"\n";
 							std::cout<<"该员工位于数据数组中的:"<<i2<<"\n";	
 							found =1 ;
-							return i2;
+							
 						}
 					}
+					return i2;
 					if(found == 0) std::cout<<"未找到相应信息.\n";
 				}break;
 				case 10:
@@ -430,12 +437,8 @@ int findinfo_String(int i,char info[])
 	void addinfo(FILE *p,int n)
 	{
 //		rewind(p);
-		int count3= count  ;
-//		while(fread(&someworker[count3], size, 1, p)==1)
-//			{
-//				count3++;
-//			}
-		for(int i=count3;i<n+count3;i++)
+		readinfo();
+		for(int i=count;i<n+count;i++)
 		{
 			std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
 			memset(someworker[i].wkid,0,20*sizeof(char));
@@ -490,10 +493,10 @@ int findinfo_String(int i,char info[])
 			someworker[i].factsalary = someworker[i].wksalary * (0.75 - someworker[i].tax_rate) - 2;
 			std::cout<<"-----------------------------------------\n";
 		}
-		rewind(p);
-		for (int i=count3;i<n+count3;i++) {
+		for (int i=count;i<n+count;i++) {
 			fwrite(&someworker[i], size, 1, p);
 		}
+		rewind(p);
 		readinfo();
 		
 
@@ -508,7 +511,7 @@ void graphworker()
 	rewind(p);
 	while(fread(&countworker[count2], size, 1, p)==1)
 		{
-			if(someworker[count2].wkid[0]!='#')
+			if(someworker[count2].wkid[0]!='#' && someworker[count2].wkname[0] != '\0' && someworker[count2].wkid[0] != '\0')
 			count2++;
 		}
 	std::cout<<"目前有"<<count2<<"个员工\n";
@@ -867,4 +870,202 @@ void outputsalary()
 		std::cout<<"-----------------------\n";
 	}
 	graphmain();
+}
+
+void BMinfo()
+{	
+	int c = 0;
+	for(int i = 0 ;i <count ;i++)
+	{
+		if(someworker[i].wkBMnum > c) c = someworker[i].wkBMnum;
+	}
+	std::cout<<"-------------------------------------\n";
+	std::cout<<"现有"<<c<<"个部门\n";
+	std::cout<<"---               1.更改部门简介\n";
+	std::cout<<"---               2.显示部门简介\n";
+	std::cout<<"---               3.浏览部门信息\n";
+	std::cout<<"---               0.返回上一层\n";
+	int mode;
+	std::cout<<"请输入选项：";
+	std::cin>>mode;
+	switch (mode)
+	{
+		case 0 :
+			{
+				graphmain();
+			}break;
+		case 1 :
+			{
+				std::cout<<"请输入要修改简介的部门编号:";
+				int a = 0;
+				std::cin>>a;
+			if (a <= 0 || a >= c) 
+			{
+			std::cout<<"输入错误！目前只有"<<c<<"个部门!\n";
+			}
+			for(int i =0 ;i< count; i++)
+			{
+				if(someworker[i].wkBMnum == a)
+				{
+				std::cout<<"部门:"<<someworker[i].wkBM<<"\n";
+				break;
+				}
+			}
+			std::cout<<"请输入部门简介(用英文或者拼音):";
+			char tempjj[200];
+			memset(tempjj, 0, 200*sizeof(char));
+			std::cin>>tempjj;
+			for(int i = 0; i< count ;i++)
+			{
+				if(someworker[i].wkid[0]=='#') continue;
+				if(someworker[i].wkBMnum == a )
+				strcpy(someworker[i].BMJJ, tempjj);
+			}
+			}break;
+		case 2 :
+			{
+			int putter = 0;
+			std::cout<<"请输入要显示简介的部门编号：";
+			std::cin>>putter;
+			while(putter <= 0 || putter > c)
+			{
+				std::cout<<"输入错误！请重新输入:";
+				std::cin>>putter;
+			}
+			for(int i =0 ;i <count ;i++)
+			{
+				if(someworker[i].wkid[0]=='#') continue;
+				if(someworker[i].wkBMnum == putter)
+				{
+					if(someworker[i].BMJJ[0]== '\0')
+					std::cout<<"该部门暂无部门简介!\n";
+					std::cout<<someworker[i].wkBM<<"\n";
+					std::cout<<someworker[i].BMJJ<<"\n";
+					break;
+				}
+			}
+			BMinfo();
+			}break;
+			case 3:
+				{
+				for(int i =1; i <= c ;i++)
+				{
+					for(int i2=0 ; i2< count ;i2 ++)
+					{
+						if(someworker[i2].wkid[0]=='#') continue;
+						if(someworker[i2].wkBMnum == i)
+						{
+							std::cout<<"部门编号:"<<someworker[i2].wkBMnum<<"\n";
+							std::cout<<"部门名称:"<<someworker[i2].wkBM<<"\n";
+							break;
+						}
+					}
+				}
+					}break;
+				}
+	fclose(p);
+	p = fopen("misinfo.dat", "wb+");
+	rewind(p);
+for(int i=0;i< count;i++)
+{
+	fwrite(&someworker[i], size, 1, p);
+}
+fclose(p);
+p = fopen("misinfo.dat","a+b");
+BMinfo();
+}
+
+void GWinfo()
+{
+	std::cout<<"-----------------------------------\n";
+	std::cout<<"---                1.搜索岗位信息\n";
+	std::cout<<"---                2.修改岗位职责\n";
+	std::cout<<"---                3.显示岗位职责\n";
+	std::cout<<"---                0.回到主菜单\n";
+	int mode = 0;
+	std::cout<<"请选择:";
+	std::cin>>mode;
+	switch (mode)
+	{
+		case 0 :
+			{
+				graphmain();
+			}break;
+		case 1 :
+			{
+				std::cout<<"请输入该岗位名称:";
+				char tempGW[50];
+				memset(tempGW, 0, 50*sizeof(char));
+				std::cin>>tempGW;
+				 int test = findinfo_String(9, tempGW);
+				if(test == -1)
+				{
+				 std::cout<<"未找到岗位:";
+				 std::cout<<tempGW<<"\n";
+				GWinfo();
+				}	
+			}break;
+		case 2 :
+			{
+			std::cout<<"请输入要修改简介的岗位名称:";
+			char tempGW[50];
+			memset(tempGW, 0, 50*sizeof(char));
+			std::cin>>tempGW;
+			int test = findinfo_String(9, tempGW);
+			if(test == -1)
+			{
+				std::cout<<"无此岗位！\n";
+				GWinfo();
+			}
+			std::cout<<"请输入岗位职责:";
+			char tempZZ[200];
+			memset(tempZZ, 0, 200*sizeof(char));
+			std::cin>>tempZZ;
+			for(int i = 0; i< count ;  i++)
+			{
+				if(someworker[i].wkid[0]=='#')
+				continue;
+				if(_strcmp(someworker[i].wkGW,tempGW)==0)
+				strcpy(someworker[i].GWZZ,tempZZ);
+			}
+			}break;
+		case 3:
+			{
+			std::cout<<"请输入要查看职责的岗位:";
+			char tempGW[50];
+			memset(tempGW,0,50*sizeof(char));
+			std::cin>>tempGW;
+			int test = findinfo_String(9, tempGW);
+			if( test == -1)
+			{
+				std::cout<<"无此岗位!\n";
+				GWinfo();
+			}
+			for(int i = 0; i< count ;  i++)
+			{
+				if(someworker[i].wkid[0]=='#')
+				continue;
+				if(_strcmp(someworker[i].wkGW,tempGW)==0)
+				{
+				if(someworker[i].GWZZ[0]=='\0')
+				{
+				std::cout<<"暂无职责信息！";
+				break;
+				}
+				std::cout<<someworker[i].GWZZ<<"\n";
+				break;
+				}
+			}
+			}break;
+	}
+	fclose(p);
+	p = fopen("misinfo.dat", "wb+");
+	rewind(p);
+	for(int i=0;i< count;i++)
+	{
+		fwrite(&someworker[i], size, 1, p);
+	}
+	fclose(p);
+	p = fopen("misinfo.dat","a+b");
+	GWinfo();
 }
