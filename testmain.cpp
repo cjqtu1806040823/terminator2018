@@ -488,6 +488,7 @@ int findinfo_String(int i,char info[])
 			std::cin>>someworker[i].wkemail;
 			someworker[i].wksalary = someworker[i].essential_salary * someworker[i].GWsalary_level + someworker[i].extra_salary;
 			someworker[i].factsalary = someworker[i].wksalary * (0.75 - someworker[i].tax_rate) - 2;
+			std::cout<<"-----------------------------------------\n";
 		}
 		rewind(p);
 		for (int i=count3;i<n+count3;i++) {
@@ -537,6 +538,7 @@ void graphworker()
 				{
 				outputinfo(i, i2);
 				}
+				std::cout<<"-------------------------\n";
 			}
 		}break;	
 		case 3:{
@@ -862,6 +864,7 @@ void outputsalary()
 		outputinfo(i, 1);
 		outputinfo(i, 2);
 		outputinfo(i, 17);
+		std::cout<<"-----------------------\n";
 	}
 	graphmain();
 }
