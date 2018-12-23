@@ -86,7 +86,6 @@
 #define MAXWOKER 25
 
 //函数声明放这里
-//void testsex();
 void firstchecker();
 void graphmain();
 void firstinput(FILE *p,int n);
@@ -96,7 +95,6 @@ void addinfo(FILE *p,int n);
 void graphworker();
 void deleteworker();
 void searchforinfo();
-int  _strcmp(char a[],char b[]);
 int readinfo();
 void changeinfo();
 void outputsalary();
@@ -155,10 +153,8 @@ int main(int argc, char *argv[]) {
 	firstchecker();
 	//从文件中读数据到结构体变量
 	readinfo();
-	//并计数员工数
-	//findinfo_String(1);
+	//txtsalary();
 	password_check();
-//	graphmain();
 	return 0;
 }
 
@@ -370,6 +366,7 @@ void outputinfo(int i,int n) //i为第几个员工、n为第几项信息
 			case 18:{
 				std::cout<<"员工密码:"<<someworker[i].pswd<<"\n";
 			}break;
+			
 	}
 				
 	
@@ -400,9 +397,7 @@ int findinfo_String(int i,char info[])
 		case 2:	{
 		for(int i2=0;i2<count4;i2++)
 		{
-//			std::cout<<_strcmp(info,someworker[i].wkname);
-//			std::cout<<"\n"<<someworker[i].wkname<<"\n";
-			if(_strcmp(info,someworker[i2].wkname)==0)
+			if(strcmp(info,someworker[i2].wkname)==0)
 			{
 				std::cout<<someworker[i2].wkname<<"\n";
 				std::cout<<"该员工工号："<<someworker[i2].wkid<<"\n";
@@ -417,7 +412,7 @@ int findinfo_String(int i,char info[])
 			
 			for(int i2=0;i2<count4;i2++)
 			{
-				if(_strcmp(info,someworker[i2].wkbirth)==0)
+				if(strcmp(info,someworker[i2].wkbirth)==0)
 				{
 					std::cout<<"找到生日为："<<info<<"的职工\n";
 					std::cout<<someworker[i2].wkname<<"\n";
@@ -432,7 +427,7 @@ int findinfo_String(int i,char info[])
 			case 5:{
 				for(int i2=0;i2<count4;i2++)
 				{
-					if(_strcmp(info,someworker[i2].fstdate)==0)
+					if(strcmp(info,someworker[i2].fstdate)==0)
 					{
 						std::cout<<"找到入职时间为:"<<info<<"的员工\n";
 						std::cout<<someworker[i2].wkname<<"\n";
@@ -450,7 +445,7 @@ int findinfo_String(int i,char info[])
 					std::cout<<"部门："<<info<<"\n";
 					for(int i2=0;i2<count4;i2++)
 					{
-						if(_strcmp(info,someworker[i2].wkBM)==0)
+						if(strcmp(info,someworker[i2].wkBM)==0)
 						{
 							std::cout<<"员工名称："<<someworker[i2].wkname<<"\n";
 						std::cout<<"该员工位于数据库中的:"<<i2<<"\n";
@@ -467,7 +462,7 @@ int findinfo_String(int i,char info[])
 					int i2;
 					for( i2=0;i2<count4;i2++)
 					{
-						if(_strcmp(info, someworker[i2].wkGW)==0)
+						if(strcmp(info, someworker[i2].wkGW)==0)
 						{
 							
 							std::cout<<someworker[i2].wkname;
@@ -485,7 +480,7 @@ int findinfo_String(int i,char info[])
 					{
 					for(int i2=0;i2<count4;i2++)
 					{
-						if(_strcmp(info, someworker[i2].wkaddress)==0)
+						if(strcmp(info, someworker[i2].wkaddress)==0)
 						{
 							
 							std::cout<<someworker[i2].wkname;
@@ -502,7 +497,7 @@ int findinfo_String(int i,char info[])
 					{
 					for(int i2=0;i2<count4;i2++)
 					{
-						if(_strcmp(info, someworker[i2].wkphonenumber)==0)
+						if(strcmp(info, someworker[i2].wkphonenumber)==0)
 						{
 							
 							std::cout<<someworker[i2].wkname;
@@ -519,7 +514,7 @@ int findinfo_String(int i,char info[])
 					{
 					for(int i2=0;i2<count4;i2++)
 					{
-						if(_strcmp(info, someworker[i2].wkemail)==0)
+						if(strcmp(info, someworker[i2].wkemail)==0)
 						{
 							std::cout<<info<<std::endl;
 							std::cout<<someworker[i2].wkname;
@@ -543,9 +538,10 @@ int findinfo_String(int i,char info[])
 		readinfo();
 		for(int i=count;i<n+count;i++)
 		{
-//			std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
+			std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
 			memset(someworker[i].wkid,0,20*sizeof(char));
-			idchecker(i);
+			std::cout<<"请输入工号:";
+			std::cin>>someworker[i].wkid;
 			std::cout<<"请输入姓名:(请使用拼音):";
 			memset(someworker[i].wkname,0,20*sizeof(char));
 			std::cin>>someworker[i].wkname;
@@ -650,7 +646,7 @@ void graphworker()
 			{
 				if(someworker[i].wkid[0] == '#') continue;
 				std::cout<<"--------"<<i<<"--------\n";
-				for(int i2=1;i2<=16;i2++)
+				for(int i2=1;i2<=18;i2++)
 				{
 				outputinfo(i, i2);
 				}
@@ -775,21 +771,6 @@ void searchforinfo()
 	graphworker();
 }
 
-int _strcmp(char a[],char b[])
-{
-	int lena =strlen(a);
-//	std::cout<<"len a="<<lena<<"\n";
-//	std::cout<<a;
-	int lenb =strlen(b);
-//	std::cout<<"len b="<<lenb<<"\n";
-//	std::cout<<b;
-	if(lena != lenb) return 1;
-	for(int i=0;i<lena;i++)
-	{
-		if(a[i]!=b[i]) {break;return 1;}
-	}
-	return 0;
-}
 
 int  readinfo()
 {
@@ -1146,7 +1127,7 @@ void GWinfo()
 			{
 				if(someworker[i].wkid[0]=='#')
 				continue;
-				if(_strcmp(someworker[i].wkGW,tempGW)==0)
+				if(strcmp(someworker[i].wkGW,tempGW)==0)
 				strcpy(someworker[i].GWZZ,tempZZ);
 			}
 			}break;
@@ -1166,7 +1147,7 @@ void GWinfo()
 			{
 				if(someworker[i].wkid[0]=='#')
 				continue;
-				if(_strcmp(someworker[i].wkGW,tempGW)==0)
+				if(strcmp(someworker[i].wkGW,tempGW)==0)
 				{
 				if(someworker[i].GWZZ[0]=='\0')
 				{
@@ -1200,18 +1181,19 @@ void idchecker(int i)
 	int isrepeat = 0;
 	for(int c = 0; c < count ; c++)
 	{
-		if(_strcmp(someworker[c].wkid,tempid)==0)
+		if(strcmp(someworker[c].wkid,tempid)==0)
 		isrepeat = 1;
 	}
 	while (isrepeat)
 	{
+		isrepeat = 0;
 		std::cout<<"工号重复！请重新输入:";
 		memset(tempid, 0, 20*sizeof(char));
 		std::cin>>tempid;
 			int isrepeat = 0;
 			for(int c = 0; c < count ; c++)
 			{
-				if(_strcmp(someworker[c].wkid,tempid)==0)
+				if(strcmp(someworker[c].wkid,tempid)==0)
 				isrepeat = 1;
 			}
 	}
@@ -1257,7 +1239,7 @@ void password_check()
 			{
 			std::cout << "请输入管理员密码:";
 			std::cin>>temp;
-			if(_strcmp(pswd, temp)==0)
+			if(strcmp(pswd, temp)==0)
 			graphmain();
 			else {
 				std::cout<<"输入错误！进入常规模式!\n";
