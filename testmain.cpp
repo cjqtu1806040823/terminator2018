@@ -102,6 +102,7 @@ void changeinfo();
 void outputsalary();
 void BMinfo();
 void GWinfo();
+void idchecker(int i);
 
 // 全局变量放在这里
 int count = 0;
@@ -189,9 +190,8 @@ void firstinput(FILE *p,int n)//第一次输入
 	rewind(p);
 	for(int i=0;i<n;i++)
 	{
-		std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
 		memset(someworker[i].wkid, 0, 20*sizeof(char));
-		std::cin>>someworker[i].wkid;
+		idchecker(i);
 		std::cout<<"请输入姓名:(请使用拼音):";
 		memset(someworker[i].wkname, 0, 20*sizeof(char));
 		std::cin>>someworker[i].wkname;
@@ -533,9 +533,9 @@ int findinfo_String(int i,char info[])
 		readinfo();
 		for(int i=count;i<n+count;i++)
 		{
-			std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
+//			std::cout<<"请输入工作证ID:(可包含数字以外的字符)：";
 			memset(someworker[i].wkid,0,20*sizeof(char));
-			std::cin>>someworker[i].wkid;
+			idchecker(i);
 			std::cout<<"请输入姓名:(请使用拼音):";
 			memset(someworker[i].wkname,0,20*sizeof(char));
 			std::cin>>someworker[i].wkname;
@@ -586,6 +586,13 @@ int findinfo_String(int i,char info[])
 			someworker[i].factsalary = someworker[i].wksalary * (0.75 - someworker[i].tax_rate) - 2;
 			std::cout<<"-----------------------------------------\n";
 		}
+		fclose(p);
+		p = fopen("misinfo.dat", "a+b");
+		struct workerinfo temp_use[MAXWOKER];
+		rewind(p);
+		for (int i = 0 ;i< count; i++) {
+			fread(&temp_use, size, 1, p);
+		}
 		for (int i=count;i<n+count;i++) {
 			fwrite(&someworker[i], size, 1, p);
 		}
@@ -604,7 +611,7 @@ void graphworker()
 	rewind(p);
 	while(fread(&countworker[count2], size, 1, p)==1)
 		{
-			if(someworker[count2].wkid[0]!='#' && someworker[count2].wkname[0] != '\0' && someworker[count2].wkid[0] != '\0')
+			if(someworker[count2].wkid[0]!='#' && someworker[count2].wkid[0] != '\0')
 			count2++;
 		}
 	std::cout<<"目前有"<<count2<<"个员工\n";
@@ -816,8 +823,8 @@ void changeinfo()
 		case 1:
 			{
 			std::cout<<"请输入新的工号:";
-			char newid[200];
-			memset(newid, 0, 200*sizeof(char));
+			char newid[20];
+			memset(newid, 0, 20*sizeof(char));
 			std::cin>>newid;
 			strcpy(someworker[test].wkid, newid);
 		std::cout<<"修改成功！"<<"工号:"<<someworker[test].wkid<<"\n";
@@ -1161,4 +1168,32 @@ void GWinfo()
 	fclose(p);
 	p = fopen("misinfo.dat","a+b");
 	GWinfo();
+}
+
+void idchecker(int i)
+{
+	char tempid[20];
+	memset(tempid, 0, 20*sizeof(char));
+	std::cout<<"请输入工号:";
+	std::cin>>tempid;
+	int isrepeat = 0;
+	for(int c = 0; c < count ; c++)
+	{
+		if(_strcmp(someworker[c].wkid,tempid)==0)
+		isrepeat = 1;
+	}
+	while (isrepeat)
+	{
+		std::cout<<"工号重复！请重新输:";
+		memset(tempid, 0, 20*sizeof(char));
+		std::cin>>tempid;
+			int isrepeat = 0;
+			for(int c = 0; c < count ; c++)
+			{
+				if(_strcmp(someworker[c].wkid,tempid)==0)
+				isrepeat = 1;
+			}
+	}
+	strcpy(someworker[i].wkid, tempid);
+	std::cout<<"输入成功！工号:"<<someworker[i].wkid<<"\n";		
 }
