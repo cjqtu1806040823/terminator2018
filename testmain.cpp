@@ -1184,7 +1184,7 @@ void idchecker(int i)
 	}
 	while (isrepeat)
 	{
-		std::cout<<"工号重复！请重新输:";
+		std::cout<<"工号重复！请重新输入:";
 		memset(tempid, 0, 20*sizeof(char));
 		std::cin>>tempid;
 			int isrepeat = 0;
