@@ -100,7 +100,7 @@ void changeinfo();
 void outputsalary();
 void BMinfo();
 void GWinfo();
-void idchecker(int i);
+//void idchecker(int i);
 void password_check();
 void guest_GUI();
 
@@ -191,7 +191,8 @@ void firstinput(FILE *p,int n)//第一次输入
 	for(int i=0;i<n;i++)
 	{
 		memset(someworker[i].wkid, 0, 20*sizeof(char));
-		idchecker(i);
+		std::cout<<"请输入工号:";
+		std::cin>>someworker[i].wkid;
 		std::cout<<"请输入姓名:(请使用拼音):";
 		memset(someworker[i].wkname, 0, 20*sizeof(char));
 		std::cin>>someworker[i].wkname;
@@ -1171,35 +1172,35 @@ void GWinfo()
 	p = fopen("misinfo.dat","a+b");
 	GWinfo();
 }
-
-void idchecker(int i)
-{
-	char tempid[20];
-	memset(tempid, 0, 20*sizeof(char));
-	std::cout<<"请输入工号:";
-	std::cin>>tempid;
-	int isrepeat = 0;
-	for(int c = 0; c < count ; c++)
-	{
-		if(strcmp(someworker[c].wkid,tempid)==0)
-		isrepeat = 1;
-	}
-	while (isrepeat)
-	{
-		isrepeat = 0;
-		std::cout<<"工号重复！请重新输入:";
-		memset(tempid, 0, 20*sizeof(char));
-		std::cin>>tempid;
-			int isrepeat = 0;
-			for(int c = 0; c < count ; c++)
-			{
-				if(strcmp(someworker[c].wkid,tempid)==0)
-				isrepeat = 1;
-			}
-	}
-	strcpy(someworker[i].wkid, tempid);
-	std::cout<<"输入成功！工号:"<<someworker[i].wkid<<"\n";		
-}
+//
+//void idchecker(int i)
+//{
+//	char tempid[20];
+//	memset(tempid, 0, 20*sizeof(char));
+//	std::cout<<"请输入工号:";
+//	std::cin>>tempid;
+//	int isrepeat = 0;
+//	for(int c = 0; c < count ; c++)
+//	{
+//		if(strcmp(someworker[c].wkid,tempid)==0)
+//		isrepeat = 1;
+//	}
+//	while (isrepeat)
+//	{
+//		isrepeat = 0;
+//		std::cout<<"工号重复！请重新输入:";
+//		memset(tempid, 0, 20*sizeof(char));
+//		std::cin>>tempid;
+//			int isrepeat = 0;
+//			for(int c = 0; c < count ; c++)
+//			{
+//				if(strcmp(someworker[c].wkid,tempid)==0)
+//				isrepeat = 1;
+//			}
+//	}
+//	strcpy(someworker[i].wkid, tempid);
+//	std::cout<<"输入成功！工号:"<<someworker[i].wkid<<"\n";		
+//}
 
 void guest_GUI ()
 {
