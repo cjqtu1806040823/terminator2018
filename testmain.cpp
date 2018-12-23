@@ -103,6 +103,8 @@ void outputsalary();
 void BMinfo();
 void GWinfo();
 void idchecker(int i);
+void password_check();
+void guest_GUI();
 
 // 全局变量放在这里
 int count = 0;
@@ -135,6 +137,7 @@ struct workerinfo {
 	double extra_salary;
 	char BMJJ[200];
 	char GWZZ[200];
+	char pswd[20];
 }someworker[MAXWOKER];
 //声明25个够用了，实际使用可以修改
 //
@@ -154,7 +157,8 @@ int main(int argc, char *argv[]) {
 	readinfo();
 	//并计数员工数
 	//findinfo_String(1);
-	graphmain();
+	password_check();
+//	graphmain();
 	return 0;
 }
 
@@ -238,6 +242,9 @@ void firstinput(FILE *p,int n)//第一次输入
 		std::cout<<"请输入员工工作邮箱:";
 		memset(someworker[i].wkemail, 0, 20*sizeof(char));
 		std::cin>>someworker[i].wkemail;
+		std::cout<<"请输入员工密码:";
+		memset(someworker[i].pswd, 0, 20*sizeof(char));
+		std::cin>>someworker[i].pswd;
 		someworker[i].wksalary = someworker[i].essential_salary * someworker[i].GWsalary_level + someworker[i].extra_salary;
 		someworker[i].factsalary = someworker[i].wksalary * (0.75 - someworker[i].tax_rate) - 2;
 		std::cout<<"------------------------------\n";
@@ -359,6 +366,9 @@ void outputinfo(int i,int n) //i为第几个员工、n为第几项信息
 			case 17:{
 				std::cout<<"应发工资:"<<someworker[i].wksalary<<"\n";
 				std::cout<<"实发工资:"<<someworker[i].factsalary<<"\n";
+			}break;
+			case 18:{
+				std::cout<<"员工密码:"<<someworker[i].pswd<<"\n";
 			}break;
 	}
 				
@@ -582,6 +592,9 @@ int findinfo_String(int i,char info[])
 			std::cin>>someworker[i].wkphonenumber;
 			std::cout<<"请输入员工工作邮箱:";
 			std::cin>>someworker[i].wkemail;
+			std::cout<<"请输入员工密码:";
+			memset(someworker[i].pswd, 0, 20*sizeof(char));
+			std::cin>>someworker[i].pswd;
 			someworker[i].wksalary = someworker[i].essential_salary * someworker[i].GWsalary_level + someworker[i].extra_salary;
 			someworker[i].factsalary = someworker[i].wksalary * (0.75 - someworker[i].tax_rate) - 2;
 			std::cout<<"-----------------------------------------\n";
@@ -683,6 +696,7 @@ void deleteworker()
 				memset(someworker[i2].wkphonenumber, 0, 20*sizeof(char));
 				memset(someworker[i2].wkemail, 0, 20*sizeof(char));
 				memset(someworker[i2].BMJJ, 0, 200*sizeof(char));
+				memset(someworker[i2].pswd, 0, 20*sizeof(char));
 				someworker[i2].wkid[0] = '#';
 				someworker[i2].wkname[0] = '#';
 				findyes = 1;
@@ -804,6 +818,7 @@ void changeinfo()
 	std::cout<<"---                 13.修改岗位工资系数\n";
 	std::cout<<"---                 14.修改个人税率\n";
 	std::cout<<"---                 15.修改额外工资\n";
+	std::cout<<"---                 16.修改密码\n";
 	std::cout<<"---                 0.返回上一层\n";
 	std::cout<<"请选择:";
 	int mode = 0 ;
@@ -941,6 +956,12 @@ void changeinfo()
 			std::cout<<"修改成功！额外工资:"<<someworker[test].extra_salary<<"\n";
 			someworker[test].wksalary = someworker[test].essential_salary * someworker[test].GWsalary_level + someworker[test].extra_salary;
 			someworker[test].factsalary = someworker[test].wksalary * (0.75 - someworker[test].tax_rate) - 2;
+		}break;
+		case 16:{
+			std::cout<<"请输入新的员工密码:";
+			memset(someworker[test].pswd, 0, 20*sizeof(char));
+			std::cin>>someworker[test].pswd;
+		std::cout<<"修改成功！新的员工密码:"<<someworker[test].pswd<<"\n";
 		}break;
 		default :
 			{
@@ -1184,7 +1205,7 @@ void idchecker(int i)
 	}
 	while (isrepeat)
 	{
-		std::cout<<"工号重复！请重新输:";
+		std::cout<<"工号重复！请重新输入:";
 		memset(tempid, 0, 20*sizeof(char));
 		std::cin>>tempid;
 			int isrepeat = 0;
@@ -1196,4 +1217,58 @@ void idchecker(int i)
 	}
 	strcpy(someworker[i].wkid, tempid);
 	std::cout<<"输入成功！工号:"<<someworker[i].wkid<<"\n";		
+}
+
+void guest_GUI ()
+{
+	std::cout<<"------------------常规模式---------------------\n";
+	std::cout<<"请输入工号:";
+	char temp[20];
+	memset(temp,0,20*sizeof(char));
+	std::cin>>temp;
+	int test = findinfo_String(1, temp);
+	if (test == -1) {std::cout<<"无此工号员工!\n";exit(1);}
+	std::cout<<"请输入"<<someworker[test].wkid<<"的密码:";
+	memset(temp, 0, 20*sizeof(char));
+	std::cin>>temp;
+	if(strcmp(temp,someworker[test].pswd)==0)
+	{
+		std::cout<<"密码正确！\n";
+		std::cout<<"---------------------\n";
+		for(int i =1 ;i<= 18 ; i++) outputinfo(test,i);
+	}
+	else
+	{
+		std::cout<<"密码错误！\n[进程已结束]\n";
+		exit(1);
+	}
+}
+
+void password_check()
+{
+	char pswd[20]={"admin10086"};
+	char temp[20];
+	memset(temp,0,20*sizeof(char));
+	std::cout<<"是否进入管理员模式? (y\\n)";
+	char c; 
+	std::cin>>c;
+	switch (c) {
+		case 'y' :
+			{
+			std::cout << "请输入管理员密码:";
+			std::cin>>temp;
+			if(_strcmp(pswd, temp)==0)
+			graphmain();
+			else {
+				std::cout<<"输入错误！进入常规模式!\n";
+				guest_GUI();
+			}	
+			}break;
+		case 'n':guest_GUI();break;
+		default:
+			{
+				std::cout<<"输入错误！\n[进程已结束]\n";
+				exit(1);
+			}break;
+	}
 }
