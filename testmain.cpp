@@ -541,7 +541,6 @@ int findinfo_String(int i,char info[])
 			
 			memset(someworker[i].wkid,0,20*sizeof(char));
 			idchecker(i);
-			std::cin>>someworker[i].wkid;
 			std::cout<<"请输入姓名:(请使用拼音):";
 			memset(someworker[i].wkname,0,20*sizeof(char));
 			std::cin>>someworker[i].wkname;
