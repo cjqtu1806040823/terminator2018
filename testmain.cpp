@@ -535,8 +535,12 @@ int findinfo_String(int i,char info[])
 	void addinfo(FILE *p,int n)
 	{
 //		rewind(p);
-		readinfo();
-		for(int i=count;i<n+count;i++)
+//		readinfo();
+		int s_count = 0;
+		while (someworker[s_count].wkid[0] !='\0') {
+			s_count ++;
+		}
+		for(int i=s_count;i<n+s_count;i++)
 		{
 			
 			memset(someworker[i].wkid,0,20*sizeof(char));
@@ -596,12 +600,7 @@ int findinfo_String(int i,char info[])
 		}
 		fclose(p);
 		p = fopen("misinfo.dat", "a+b");
-		struct workerinfo temp_use[MAXWOKER];
-		rewind(p);
-		for (int i = 0 ;i< count; i++) {
-			fread(&temp_use, size, 1, p);
-		}
-		for (int i=count;i<n+count;i++) {
+		for (int i=s_count;i<n+s_count;i++) {
 			fwrite(&someworker[i], size, 1, p);
 		}
 		rewind(p);
@@ -616,12 +615,8 @@ void graphworker()
 {
 	std::cout<<"------------------------- 员工基本信息  ----------------------------\n";
 	int count2 = 0;
-	rewind(p);
-	while(fread(&countworker[count2], size, 1, p)==1)
-		{
-			if(someworker[count2].wkid[0]!='#' && someworker[count2].wkid[0] != '\0')
-			count2++;
-		}
+	for (int i =0 ; i < MAXWOKER ; i++)
+	if ( someworker[i].wkid[0]!='#' && someworker[i].wkid[0]!='\0') count2++;
 	std::cout<<"目前有"<<count2<<"个员工\n";
 	std::cout<<"---                   1.增加员工信息\n";
 	std::cout<<"---                   2.浏览全部员工信息\n";
@@ -641,9 +636,9 @@ void graphworker()
 			graphmain();
 		}break;
 		case 2:{
-			for(int i=0;i<count2;i++)
+			for(int i=0;i< MAXWOKER;i++)
 			{
-				if(someworker[i].wkid[0] == '#') continue;
+				if(someworker[i].wkid[0] == '#' ||someworker[i].wkid[0] =='\0') continue;
 				std::cout<<"--------"<<i<<"--------\n";
 				for(int i2=1;i2<=18;i2++)
 				{
@@ -667,15 +662,9 @@ void deleteworker()
 	std::cout<<"请输入要删除员工的工号:";
 	memset(info, 0, 50*sizeof(char));
 	std::cin>>info;
-	rewind(p);
-		int count4= 0;
-		while(fread(&someworker[count4], size, 1, p)==1)
-			{
-				count4++;
-			}
 			rewind(p);
 			int findyes = 0;
-			for(int i2=0;i2<count4;i2++)
+			for(int i2=0;i2< count ;i2++)
 			{
 				if(strcmp(info,someworker[i2].wkid)==0)
 				{
@@ -702,7 +691,7 @@ void deleteworker()
 			fclose(p);
 			p = fopen("misinfo.dat", "wb+");
 			rewind(p);
-		for(int i=0;i<count4;i++)
+		for(int i=0;i< MAXWOKER ;i++)
 		{
 			fwrite(&someworker[i], size, 1, p);
 		}
@@ -964,7 +953,8 @@ void outputsalary()
 {
 	for(int i =0 ; i < count ; i++)
 	{
-		if(someworker[i].wkid[0] == '#') continue;
+		if(someworker[i].wkid[0] == '#' ||
+		someworker[i].wkid[0]=='\0') continue;
 		outputinfo(i, 1);
 		outputinfo(i, 2);
 		outputinfo(i, 17);
@@ -978,6 +968,8 @@ void BMinfo()
 	int c = 0;
 	for(int i = 0 ;i <count ;i++)
 	{
+		if(someworker[i].wkid[0] == '\0' || someworker[i].wkid[0] == '#')
+		continue;
 		if(someworker[i].wkBMnum > c) c = someworker[i].wkBMnum;
 	}
 	std::cout<<"-------------------------------------\n";
@@ -1000,7 +992,7 @@ void BMinfo()
 				std::cout<<"请输入要修改简介的部门编号:";
 				int a = 0;
 				std::cin>>a;
-			if (a <= 0 || a >= c) 
+			if (a <= 0 || a > c) 
 			{
 			std::cout<<"输入错误！目前只有"<<c<<"个部门!\n";
 			}
