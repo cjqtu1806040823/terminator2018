@@ -641,11 +641,47 @@ void output_salary()
 	system("clear");
 	std::cout<<"➤			1.审查模式\n";
 	std::cout<<"➤			2.浏览模式\n";
+	std::cout<<"➤			3.图表模式\n";
 	char c;
 	cout<<"➤ 🍺请选择:";
 	cin>>c;
 	fflush(stdin);
-	while (c >'2' || c <'1')
+	if (c == '3') {
+		int a[MAXWORKER];
+		int per_ge;
+		cout<<"➤ 请输入每格代表的CNY(人民币)数:";
+		cin>>per_ge;
+		cout<<"\n";
+		for (int i =0 ;i <MAXWORKER;i++) a[i]=int(someworker[i].wksalary/per_ge);
+		int maxsalary = -1;
+		for (int i =0; i< MAXWORKER ;i++)
+		{
+		if(someworker[i].wkid[0]=='#'||someworker[i].wkid[0]=='#') continue;
+		if(a[i]>maxsalary) maxsalary = a[i];	
+		}
+		for(int i = maxsalary ;i>0;i--)
+		{
+			for (int i2 = 0 ;i2 < MAXWORKER; i2++)
+			{
+				if(someworker[i2].wkid[0]=='#'||someworker[i2].wkid[0]=='#') continue;
+				if(a[i2]>=i) cout<<"#       ";
+			}
+		cout<<"\n";
+		}
+		for (int i=0;i<MAXWORKER;i++) {
+			if(someworker[i].wkid[0]=='#'||someworker[i].wkid[0]=='#') continue;
+			cout<<someworker[i].wkname;
+			for(int p=0;p<8-strlen(someworker[i].wkname);p++)
+			cout<<" ";
+		}
+		cout<<"\n";
+		char c;
+		cout<<"➤ 请输入任意键(回车除外):";
+		cin>>c;
+		gui_main();
+			
+	}
+	while (c >'3' || c <'1')
 	{
 		cout<<"➤ ❌ 输入错误\n➤ 请重新输入:";
 		cin>>c;
@@ -689,6 +725,7 @@ void changeinfo()
 	std::cout<<"➤ 🍺 请选择:";
 	int mode = 0 ;
 	std::cin>>mode;
+	if (mode == 0 )graph_worker();
 	std::cout<<"➤ 🍻 请输入即将操作的工号：";
 	char info[20];
 	memset(info, 0, 20*sizeof(char));
