@@ -620,9 +620,12 @@ void root_check()
 {
 	fflush(stdin);
 	char tmp_pass[20];
-	cout<<"➤ ❗️重要操作\n";
-	cout<<"➤  请输入管理员密码:";
-	cin>>tmp_pass;
+	char *p;
+	p = getpass("➤  请输入管理员密码:");
+	strcpy(tmp_pass, p);
+//	cout<<"➤ ❗️重要操作\n";
+//	cout<<"➤  请输入管理员密码:";
+//	cin>>tmp_pass;
 if(strcmp(root_pass,tmp_pass)==0) ;
 else {
 	cout<<"❌ 密码错误\n";
@@ -1141,9 +1144,12 @@ void gui_guest()
 		std::cout<<"➤ ❌ 未找到工号！\n\n";
 		exit(0);
 	}
-	cout<<"➤ ❗️请输入该员工的个人密码:";
+//	cout<<"➤ ❗️请输入该员工的个人密码:";
 	char pswdTmp[20];
-	cin>>pswdTmp;
+	
+	char *p;
+	p = getpass("➤ ❗️请输入该员工的个人密码:");
+	strcpy(pswdTmp, p);
 	if(strcmp(someworker[test].pswd, pswdTmp)==0)
 	{
 	for(int i =1 ;i <=18;i++) output_info(test, i);
