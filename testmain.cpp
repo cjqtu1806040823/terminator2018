@@ -84,7 +84,8 @@ int main( void )
 	system("figlet Lidh.team");
 	system("cal");
 	system("date");
-	sleep(3);
+	cout<<"\n➤ 任意键继续:";
+	char tmp_char1 = getchar();
 	system("clear");
 	rewind(fp);
 	for (int i = 0 ;i < MAXWORKER ; i++)
@@ -509,7 +510,7 @@ int findinfo_string(int i,char info[])
 							found =1 ;
 						}
 					}
-					return i2;
+					if (found== 1)return i2;
 					if(found == 0) std::cout<<"➤ ❌ 未找到相应信息.\n";
 				}break;
 				case 10:
