@@ -89,13 +89,13 @@ int main( void )
 	rewind(fp);
 	for (int i = 0 ;i < MAXWORKER ; i++)
 	fread(&someworker[i], size, 1, fp);
-	printf(RED"➤ 🍎 此版本为界面升级版\n" NONE , __LINE__);
-	cout<<"➤ 版本号:"<<mis_version<<"\n";
-	cout<<"➤ 最近一次更新:"<<update_time<<"\n";
-	cout<<"➤ 本次更新内容:\n";
-	cout<<"⟲ 重制文件读写\n";
-	cout<<"⤫ 删除冗余代码\n";
-	cout<<"➤ 输入s进入超级用户模式，输入其他进入访客模式:";
+	printf(RED"➤ 🍎 此版本为界面升级版\n" );
+	cout<<GREEN<<"➤ 版本号:"<<mis_version<<"\n";
+	cout<<BLUE<<"➤ 最近一次更新:"<<update_time<<"\n";
+	cout<<PURPLE<<"➤ 本次更新内容:\n";
+	cout<<L_CYAN<<"⟲ 重制文件读写\n";
+	cout<<GRAY<<"⤫ 删除冗余代码\n";
+	cout<<BOLD<<NONE<<"➤ 输入s进入超级用户模式，输入其他进入访客模式:";
 	char str[1000];
 //	sprintf(str, "spark %lf %lf %lf",someworker[0].wksalary,someworker[1].wksalary,someworker[2].wksalary);
 //	system(str);
