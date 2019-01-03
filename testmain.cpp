@@ -80,7 +80,7 @@ void gui_guest();
 //endfoo
 int main( void )
 {
-
+	system("clear");
 	system("figlet Lidh.team");
 	system("cal");
 	system("date");
