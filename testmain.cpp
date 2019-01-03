@@ -595,7 +595,13 @@ void deleteworker()
 				memset(someworker[i2].wkemail, 0, 20*sizeof(char));
 				memset(someworker[i2].BMJJ, 0, 200*sizeof(char));
 				memset(someworker[i2].GWZZ,0,200*sizec);
-//				memset(someworker[i2].pswd, 0, 20*sizeof(char));
+				memset(someworker[i2].pswd, 0, 20*sizeof(char));
+				someworker[i2].wksalary = 0;
+				someworker[i2].extra_salary = 0;
+				someworker[i2].tax_rate = 0;
+				someworker[i2].factsalary = 0;
+				someworker[i2].wkBMnum = 0;
+				someworker[i2].wkGWnum = 0;
 				someworker[i2].wkid[0] = '#';
 				someworker[i2].wkname[0] = '#';
 				findyes = 1;
@@ -689,6 +695,7 @@ void changeinfo()
 	std::cout<<"➤ 🍺 请选择:";
 	int mode = 0 ;
 	std::cin>>mode;
+	if (mode == 0 )graph_worker();
 	std::cout<<"➤ 🍻 请输入即将操作的工号：";
 	char info[20];
 	memset(info, 0, 20*sizeof(char));
